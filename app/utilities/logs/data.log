@@ -1,0 +1,105 @@
+2025-11-12 22:36:40,060-app.log_control-INFO-Processing signup form submission.
+2025-11-12 22:37:24,168-app.log_control-INFO-Processing signup form submission.
+2025-11-12 22:39:43,613-app.log_control-INFO-Processing signup form submission.
+2025-11-12 22:40:38,680-app.log_control-INFO-Processing signup form submission.
+2025-11-12 22:43:02,994-app.log_control-INFO-Processing signup form submission.
+2025-11-12 22:43:03,019-app.log_control-WARNING-La contraseï¿½a debe tener al menos 8 caracteres.
+2025-11-12 23:42:29,672-app.log_control-INFO-Processing signup form submission.
+2025-11-12 23:42:31,976-app.log_control-INFO-persona created successfully.
+2025-11-12 23:42:32,373-app.log_control-INFO-user created successfully.
+2025-11-12 23:42:32,467-app.log_control-ERROR- Error al guardar en la base de datos: Foreign key associated with column 'client.client_type' could not find table 'clienttype' with which to generate a foreign key to target column 'id_client_type'
+[2025-11-13 00:00:01,953 | app.log_control] -> [INFO]: Processing signup form submission.
+[2025-11-13 00:00:03,905 | app.log_control] -> [INFO]: persona created successfully.
+[2025-11-13 00:00:04,300 | app.log_control] -> [INFO]: user created successfully.
+[2025-11-13 00:02:35,924 | app.log_control] -> [INFO]: Processing signup form submission.
+[2025-11-13 00:02:36,204 | app.log_control] -> [ERROR]: Error al crear persona: (psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "persona_email_key"
+DETAIL:  Key (email)=(juandiegoricipn@gmail.com) already exists.
+
+[SQL: INSERT INTO persona (full_name, birth_date, email, phone) VALUES (%(full_name)s, %(birth_date)s, %(email)s, %(phone)s) RETURNING persona.id_persona]
+[parameters: {'full_name': 'Diego Rico', 'birth_date': '2003-06-19', 'email': 'juandiegoricipn@gmail.com', 'phone': '5610792764'}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+[2025-11-13 00:05:25,098 | app.log_control] -> [INFO]: Processing signup form submission.
+[2025-11-13 00:05:26,940 | app.log_control] -> [INFO]: persona created successfully.
+[2025-11-13 00:05:27,290 | app.log_control] -> [INFO]: user created successfully.
+[2025-11-13 17:50:23,409 | app.log_control] -> [INFO]: Processing signup form submission.
+[2025-11-13 17:50:25,504 | app.log_control] -> [INFO]: persona created successfully.
+[2025-11-13 17:50:25,914 | app.log_control] -> [INFO]: user created successfully.
+[2025-11-13 19:25:54,850 | app.log_control] -> [ERROR]: Error durante el inicio de sesión: (psycopg2.OperationalError) connection to server at "ep-jolly-fire-adj3r376-pooler.c-2.us-east-1.aws.neon.tech" (44.198.216.75), port 5432 failed: SSL SYSCALL error: EOF detected
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8). 500 Internal Server Error.
+[2025-11-13 19:25:55,848 | app.log_control] -> [ERROR]: Error durante el inicio de sesión: (psycopg2.OperationalError) connection to server at "ep-jolly-fire-adj3r376-pooler.c-2.us-east-1.aws.neon.tech" (44.198.216.75), port 5432 failed: SSL SYSCALL error: EOF detected
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8). 500 Internal Server Error.
+[2025-11-13 19:29:17,040 | app.log_control] -> [WARNING]: Intento de inicio de sesión fallido por credenciales incorrectas. 401 Unauthorized.
+[2025-11-13 19:29:53,809 | app.log_control] -> [INFO]: Usuario EmDoom inició sesión exitosamente. 200 OK.
+[2025-11-13 19:29:57,819 | app.log_control] -> [INFO]: Usuario EmDoom inició sesión exitosamente. 200 OK.
+[2025-11-13 20:43:22,829 | app.log_control] -> [ERROR]: Error durante el inicio de sesión: (psycopg2.OperationalError) server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+[SQL: SELECT useraccount.id_user AS useraccount_id_user, useraccount.username AS useraccount_username, useraccount.password AS useraccount_password, useraccount.role AS useraccount_role, useraccount.created_at AS useraccount_created_at, useraccount.updated_at AS useraccount_updated_at, useraccount.persona_id AS useraccount_persona_id 
+FROM useraccount 
+WHERE useraccount.username = %(username_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'username_1': 'usuario2', 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8). 500 Internal Server Error.
+[2025-11-13 20:48:21,337 | app.log_control] -> [WARNING]: Intento de inicio de sesión fallido por credenciales incorrectas. 401 Unauthorized.
+[2025-11-13 20:51:33,510 | app.log_control] -> [INFO]: Processing signup form submission.
+[2025-11-13 20:51:35,290 | app.log_control] -> [INFO]: persona created successfully.
+[2025-11-13 20:51:35,785 | app.log_control] -> [INFO]: user created successfully.
+[2025-11-13 20:51:47,650 | app.log_control] -> [INFO]: Usuario yoyo inició sesión exitosamente. 200 OK.
+[2025-11-15 13:59:24,618 | app.log_control] -> [WARNING]: Intento de inicio de sesión fallido por credenciales incorrectas. 401 Unauthorized.
+[2025-11-15 13:59:24,707 | app.log_control] -> [WARNING]: Intento de inicio de sesión fallido por credenciales incorrectas. 401 Unauthorized.
+[2025-11-15 14:20:15,902 | app.log_control] -> [INFO]: Processing signup form submission.
+[2025-11-15 14:20:15,947 | app.log_control] -> [WARNING]: El rol seleccionado no es válido.
+[2025-11-15 14:23:02,545 | app.log_control] -> [INFO]: Processing signup form submission.
+[2025-11-15 14:23:02,546 | app.log_control] -> [WARNING]: El rol seleccionado no es válido.
+[2025-11-15 14:23:08,800 | app.log_control] -> [INFO]: Processing signup form submission.
+[2025-11-15 14:23:08,801 | app.log_control] -> [WARNING]: El rol seleccionado no es válido.
+[2025-11-15 14:23:39,042 | app.log_control] -> [INFO]: Processing signup form submission.
+[2025-11-15 14:23:39,042 | app.log_control] -> [WARNING]: El rol seleccionado no es válido.
+[2025-11-15 14:23:40,458 | app.log_control] -> [INFO]: Processing signup form submission.
+[2025-11-15 14:23:40,459 | app.log_control] -> [WARNING]: El rol seleccionado no es válido.
+[2025-11-15 14:25:24,971 | app.log_control] -> [INFO]: Processing signup form submission.
+[2025-11-15 14:25:24,972 | app.log_control] -> [WARNING]: El rol seleccionado no es válido.
+[2025-11-15 14:25:26,986 | app.log_control] -> [INFO]: Processing signup form submission.
+[2025-11-15 14:25:26,986 | app.log_control] -> [WARNING]: El rol seleccionado no es válido.
+[2025-11-15 14:25:36,991 | app.log_control] -> [INFO]: Processing signup form submission.
+[2025-11-15 14:25:36,992 | app.log_control] -> [WARNING]: El rol seleccionado no es válido.
+[2025-11-15 14:33:33,646 | app.log_control] -> [INFO]: Processing signup form submission.
+[2025-11-15 14:33:33,647 | app.log_control] -> [WARNING]: El rol seleccionado no es válido.
+[2025-11-15 14:35:22,374 | app.log_control] -> [INFO]: Processing signup form submission.
+[2025-11-15 14:35:22,375 | app.log_control] -> [WARNING]: El rol seleccionado no es válido.
+[2025-11-15 14:36:22,273 | app.log_control] -> [INFO]: Processing signup form submission.
+[2025-11-15 14:36:22,274 | app.log_control] -> [WARNING]: El rol seleccionado no es válido.
+[2025-11-15 14:37:02,786 | app.log_control] -> [INFO]: Processing signup form submission.
+[2025-11-15 14:37:02,787 | app.log_control] -> [WARNING]: El rol seleccionado no es válido.
+[2025-11-15 14:37:19,465 | app.log_control] -> [INFO]: Processing signup form submission.
+[2025-11-15 14:37:19,466 | app.log_control] -> [WARNING]: El rol seleccionado no es válido.
+[2025-11-15 14:37:32,005 | app.log_control] -> [INFO]: Processing signup form submission.
+[2025-11-15 14:37:32,005 | app.log_control] -> [WARNING]: El rol seleccionado no es válido.
+[2025-11-15 14:37:47,507 | app.log_control] -> [INFO]: Processing signup form submission.
+[2025-11-15 14:37:47,508 | app.log_control] -> [WARNING]: El rol seleccionado no es válido.
+[2025-11-15 14:37:48,870 | app.log_control] -> [INFO]: Processing signup form submission.
+[2025-11-15 14:37:48,870 | app.log_control] -> [WARNING]: El rol seleccionado no es válido.
+[2025-11-15 14:38:41,657 | app.log_control] -> [INFO]: Processing signup form submission.
+[2025-11-15 14:38:41,666 | app.log_control] -> [ERROR]: Error al crear persona: (psycopg2.OperationalError) SSL connection has been closed unexpectedly
+
+[SQL: INSERT INTO persona (full_name, birth_date, email, phone) VALUES (%(full_name)s, %(birth_date)s, %(email)s, %(phone)s) RETURNING persona.id_persona]
+[parameters: {'full_name': 'Nombre Apellido', 'birth_date': '2011-11-11', 'email': 'usuario_prueba@prueba.test', 'phone': '5511223344'}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+[2025-11-15 14:44:58,744 | app.log_control] -> [INFO]: Processing signup form submission.
+[2025-11-15 14:45:00,786 | app.log_control] -> [INFO]: persona created successfully.
+[2025-11-15 14:45:01,195 | app.log_control] -> [INFO]: user created successfully.
+[2025-11-15 14:45:17,186 | app.log_control] -> [INFO]: Usuario usuario_prueba inició sesión exitosamente. 200 OK.
+[2025-11-15 14:56:46,961 | app.log_control] -> [INFO]: Usuario usuario_prueba inició sesión exitosamente. 200 OK.
+[2025-11-15 14:58:30,058 | app.log_control] -> [INFO]: Usuario usuario_prueba inició sesión exitosamente. 200 OK.
+[2025-11-15 14:58:37,661 | app.log_control] -> [WARNING]: Intento de inicio de sesión fallido por credenciales incorrectas. 401 Unauthorized.
+[2025-11-15 14:58:40,017 | app.log_control] -> [WARNING]: Intento de inicio de sesión fallido por credenciales incorrectas. 401 Unauthorized.
+[2025-11-16 04:11:36,082 | app.log_control] -> [ERROR]: Error durante el inicio de sesión: (psycopg2.OperationalError) could not translate host name "ep-jolly-fire-adj3r376-pooler.c-2.us-east-1.aws.neon.tech" to address: Name or service not known
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8). 500 Internal Server Error.
+[2025-11-16 04:14:10,433 | app.log_control] -> [INFO]: Usuario usuario_prueba inició sesión exitosamente. 200 OK.

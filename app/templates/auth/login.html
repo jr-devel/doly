@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+{% block description %}Access your DOLY account to manage your tasks and projects.{% endblock %}
+{% block keywords %}DOLY, login, user access, account{% endblock %}
+
+{% block content %}
+<section class="auth-login">
+    <div class="container">
+        <h1>Login to DOLY</h1>
+        <form method="POST" action="{{ url_for('auth.login') }}">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">Login</button>
+            <a href="{{ url_for('auth.signup') }}">Sign up</a>
+        </form>
+    </div>
+</section>
+{% endblock %}

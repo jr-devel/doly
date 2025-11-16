@@ -1,0 +1,15 @@
+node_modules
+__pycache__
+__pycache__/*
+*.pyc
+venv/
+venv/*
+.env
+.DS_Store
+package-lock.json
+package.json
+.idea/
+app/static/scss
+app/static/test
+gulpfile.js
+Documentation/

@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% block title %}Registro{% endblock %}
+{% block description %}Crea un nuevo usuario en DOLY — asistencia vial y gestión de cuentas.{% endblock %}
+
+{% block content %}
+<main class="signup-page">
+    <section class="signup">
+        <div class="signup__card" role="region" aria-labelledby="signup-title">
+            <a class="signup__brand" href="{{ url_for('views.index') }}" aria-label="Volver al inicio">
+                <img src="{{ url_for('static', filename='img/logos/DOLY_LOGO-extended.png') }}" alt="DOLY logo" class="signup__logo">
+            </a>
+            <h1 id="signup-title" class="signup__title">Crear usuario</h1>
+            <p class="signup__lead">Registra una nueva persona y su cuenta asociada en el sistema.</p>
+            <!-- ERROR MESSAGES -->
+            <!----------------------------------------------- FORMULARIO DE REGISTRO ----------------------------------------------->
+            <form class="signup__form mt-4" method="post" action="{{ url_for('auth.signup') }}" novalidate>
+            {{ csrf_field() if csrf_field is defined else '' }}
+            <!----------------------------------------------- DATOS PERSONALES ----------------------------------------------->
+                <fieldset>
+                    <legend>Datos personales</legend>
+                    <!-- FULL NAME -->
+                    <div class="form-row">
+                        <label for="full_name">Nombre completo</label>
+                        <input id="full_name" name="full_name" type="text" required minlength="3" maxlength="100" placeholder="Juan Pérez" autocomplete="name">
+                    </div>
+                    <div class="form-row two-col">
+                        <!-- BIRTH -->
+                        <div>
+                            <label for="birth_date">Fecha de nacimiento</label>
+                            <input id="birth_date" name="birth_date" type="date" required max="{{ current_date if current_date is defined else '' }}">
+                        </div>
+                        <!-- PHONE -->
+                        <div>
+                            <label for="phone">Teléfono</label>
+                            <input id="phone" name="phone" type="tel" required pattern="^\d{7,15}$" maxlength="15" placeholder="5512345678" inputmode="tel">
+                        </div>
+                    </div>
+                    <!-- EMAIL -->
+                    <div class="form-row">
+                        <label for="email">Correo electrónico</label>
+                        <input id="email" name="email" type="email" required maxlength="100" placeholder="correo@ejemplo.com" autocomplete="email">
+                    </div>
+                </fieldset>
+                <hr>
+            <!----------------------------------------------- CUENTA DE USUARIO ----------------------------------------------->
+                <fieldset>
+                    <legend>Cuenta de usuario</legend>
+                    <!-- USERNAME -->
+                    <div class="form-row two-col">
+                    <div>
+                    <label for="username">Usuario</label>
+                    <input id="username" name="username" type="text" required minlength="4" maxlength="30" pattern="^\S+$" placeholder="usuario123" autocomplete="username">
+                    </div>
+                    <!-- PASSWORD -->
+                    <div>
+                        <label for="password">Contraseña</label>
+                        <div class="password-wrapper">
+                            <input id="password" name="password" type="password" required minlength="8" maxlength="100" placeholder="●●●●●●●●" autocomplete="new-password" aria-describedby="pwd-help pwd-strength">
+                            <button type="button" class="password-toggle" aria-label="Mostrar contraseña" title="Mostrar / ocultar contraseña">👁️</button>
+                            </div>
+                            <small id="pwd-help" class="muted">Mínimo 8 caracteres.</small>
+                            <meter id="pwd-strength" max="4" aria-hidden="true"></meter>
+                            <div id="pwd-strength-text" class="muted" aria-live="polite"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-row role-select hidden">
+                        <label for="role">Rol</label>
+                        <div class="custom-select">
+                            <select id="role" name="role" required>
+                            <option value="client" selected>Selecciona un rol</option>
+                            <!-- {% set roles = ['client', 'employee', 'company_admin', 'sys_admin', 'audit_admin', 'support_staff'] %}
+                            {% for r in roles %}
+                                <option value="{{ r }}" {% if r == role %}selected{% endif %}>
+                                {{ r.replace('_',' ').title() }}
+                                </option>
+                            {% endfor %} -->
+                            </select>
+                        </div>
+                    </div>
+                </fieldset>
+                <!-- TERMS & CONDITIONS OF SERVICE -->
+                <div class="form-row checkbox-row">
+                    <label class="checkbox">
+                        <input type="checkbox" name="terms" required>
+                        <span>Acepto los <a href="#">términos y condiciones</a></span>
+                    </label>
+                </div>
+                <!-- SUBMIT -->
+                <div class="form-row actions">
+                    <button class="btn btn--primary" type="submit">Crear usuario</button>
+                    <a class="btn btn--ghost" href="{{ url_for('views.index') }}">Cancelar</a>
+                </div>
+            </form>
+        </div>
+        <!-- ··· -->
+        <aside class="signup__aside" aria-hidden="true">
+            <div class="signup__promo">
+                <h2>Gestión completa</h2>
+                <p>Administra usuarios, roles y permisos con seguridad y control total desde DOLY.</p>
+                <br> <br>
+                {# Mensajes de error general #}
+                {% if errors %}
+                <h2>Warning:</h2>
+                <div class="alert alert-danger mt-3">
+                    <ul class="mb-0">
+                        {% for e in errors %}
+                            <li>{{ e }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+        </aside>
+    </section>
+</main>
+
+{% block scripts %}
+<script>
+/* Script UX: mostrar/ocultar contraseña + indicador de seguridad */
+(function(){
+    const pwd = document.getElementById('password');
+    const toggle = document.querySelector('.password-toggle');
+    const meter = document.getElementById('pwd-strength');
+    const meterText = document.getElementById('pwd-strength-text');
+    //
+    if(toggle && pwd){
+        toggle.addEventListener('click', () => {
+            const is = pwd.type === 'password';
+            pwd.type = is ? 'text' : 'password';
+            toggle.textContent = is ? '🙈' : '👁️';
+        });
+        //
+        pwd.addEventListener('input', (e) => {
+        const val = e.target.value;
+        let score = 0;
+        if(val.length >= 8) score++;
+        if(/[A-Z]/.test(val)) score++;
+        if(/[0-9]/.test(val)) score++;
+        if(/[^A-Za-z0-9]/.test(val)) score++;
+        meter.value = score;
+        const labels = ['Muy débil','Débil','Aceptable','Fuerte','Excelente'];
+        meterText.textContent = labels[score];
+        });
+    }
+})();
+</script>
+{% endblock %}
+{% endblock %}

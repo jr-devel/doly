@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio{% endblock %}
+{% block description %}Descubre DOLY, tu plataforma inteligente para la gestión logística y empresarial.{% endblock %}
+{% block keywords %}DOLY, logística, gestión, productividad, empresa, tecnología{% endblock %}
+
+{% block content %}
+
+<section class="landpage-hero hero">
+    <div class="landpage-hero__overlay"></div>
+    <div class="landpage-hero__content content">
+        <h1 class="hero__title">DOLY</h1>
+        <p class="hero__subtitle">
+            Transforma tu logística con una experiencia digital ágil, moderna y conectada.
+        </p>
+        <div class="hero__actions">
+            <a href="#services" class="btn">Ver Servicios</a>
+            <a href="{{ url_for('auth.login') }}" class="btn btn--ghost">Iniciar Sesión</a>
+        </div>
+    </div>
+</section>
+
+<section id="services" class="landpage-services">
+    <h2 class="section-title">Nuestros Servicios</h2>
+    <div class="services-grid">
+        <article class="service-card">
+            <img src="{{ url_for('static', filename='img/service-towing.webp') }}" alt="Servicio de grúa">
+            <h3>Asistencia en carretera</h3>
+            <p>Rescate, remolque y soporte mecánico en cualquier parte del país.</p>
+        </article>
+
+        <article class="service-card">
+            <img src="{{ url_for('static', filename='img/service-tracking.webp') }}" alt="Monitoreo inteligente">
+            <h3>Monitoreo inteligente</h3>
+            <p>Seguimiento en tiempo real de unidades, recursos y personal con IA predictiva.</p>
+        </article>
+
+        <article class="service-card">
+            <img src="{{ url_for('static', filename='img/service-dashboard.webp') }}" alt="Gestión empresarial">
+            <h3>Gestión empresarial</h3>
+            <p>Visualiza tus datos y mejora tus decisiones con reportes automáticos y dashboards.</p>
+        </article>
+    </div>
+</section>
+
+<section class="landpage-about">
+    <div class="about-content">
+        <h2>Innovación que impulsa resultados</h2>
+        <p>
+            En <strong>DOLY Logistic</strong> entendemos la importancia del tiempo, la precisión y la seguridad.
+            Por eso, desarrollamos soluciones que integran tecnología, análisis de datos y experiencia operativa
+            para llevar tu empresa al siguiente nivel.
+        </p>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,345 @@
+{% block head %}
+    <style>
+        :root { --bg:#0b0d12; --panel:#121621; --muted:#9aa4b2; --text:#e6eaf0; --accent:#6aa9ff; --ok:#19c37d; --warn:#ffb020; --bad:#ff6b6b; --br:10px; --b:#1f2533;}
+        * { box-sizing: border-box; }
+        html,body { margin:0; padding:0; background:var(--bg); color:var(--text); font:14px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+        a { color:var(--accent); text-decoration:none; }
+        .wrap { max-width:1200px; margin:0 auto; padding:24px; }
+        .row { display:flex; gap:16px; flex-wrap:wrap; }
+        .col { flex:1 1 280px; }
+        .panel { background:var(--panel); border:1px solid var(--b); border-radius:var(--br); padding:16px; }
+        .header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px; }
+        .breadcrumb { color:var(--muted); font-size:12px; }
+        .breadcrumb span { color:var(--text); }
+        .title { font-size:18px; font-weight:600; }
+        .stats { display:grid; grid-template-columns: repeat(3, minmax(160px, 1fr)); gap:12px; }
+        .stat { padding:12px; border:1px solid var(--b); border-radius:8px; background:rgba(255,255,255,0.02); }
+        .stat .k { color:var(--muted); font-size:12px; }
+        .stat .v { font-size:20px; font-weight:700; margin-top:4px; }
+        .grid { display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; }
+        .kv { display:grid; grid-template-columns: 160px 1fr; gap:6px 12px; }
+        .kv .k { color:var(--muted); }
+        .kv .v { color:var(--text); word-break:break-word; }
+        .actions { display:flex; gap:8px; flex-wrap:wrap; }
+        .btn { padding:8px 10px; border:1px solid var(--b); border-radius:8px; background:#0f1320; color:var(--text); cursor:pointer; }
+        .btn:hover { border-color:#2b3347; }
+        .btn.ok { border-color:rgba(25,195,125,.4); background:rgba(25,195,125,.08); }
+        .btn.warn { border-color:rgba(255,176,32,.4); background:rgba(255,176,32,.08); }
+        .btn.bad { border-color:rgba(255,107,107,.4); background:rgba(255,107,107,.08); }
+        .section { margin-top:16px; }
+        .section h3 { margin:0 0 8px 0; font-size:15px; }
+        .table { width:100%; border-collapse:separate; border-spacing:0; }
+        .table th, .table td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--b); vertical-align:top; }
+        .table th { color:var(--muted); font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.04em; }
+        .empty { color:var(--muted); padding:12px; border:1px dashed var(--b); border-radius:8px; text-align:center; }
+        .searchbar { display:flex; gap:8px; align-items:center; }
+        .input { background:#0f1320; border:1px solid var(--b); color:var(--text); padding:8px 10px; border-radius:8px; width:100%; }
+        .pill { display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px; border:1px solid var(--b); color:var(--muted); }
+        .muted { color:var(--muted); }
+        @media (max-width: 900px){ .grid { grid-template-columns: 1fr; } .stats{ grid-template-columns:1fr; } }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="wrap">
+
+    {% macro safe_url(key, fallback='#') -%}
+        {%- if urls is defined and urls is mapping and key in urls -%}
+            {{ urls[key] }}
+        {%- else -%}
+            {{ fallback }}
+        {%- endif -%}
+    {%- endmacro %}
+
+    {% macro resolve(obj, key, default='') -%}
+        {%- if obj is mapping -%}
+            {{ obj.get(key, default) | default(default, true) }}
+        {%- elif obj is defined -%}
+            {{ (obj | attr(key)) | default(default, true) }}
+        {%- else -%}
+            {{ default }}
+        {%- endif -%}
+    {%- endmacro %}
+
+    {% macro render_summary(obj, fields, title=None, extra_actions=[]) -%}
+        <div class="panel section">
+            <div class="header">
+                <div class="title">{{ title or '' }}</div>
+                <div class="actions">
+                    {%- for act in extra_actions -%}
+                        <a class="btn" href="{{ act.href or '#' }}">{{ act.label }}</a>
+                    {%- endfor -%}
+                </div>
+            </div>
+            <div class="kv">
+                {%- for f in fields -%}
+                    <div class="k">{{ f.label or f.key }}</div>
+                    <div class="v">
+                        {%- set val = resolve(obj, f.key) -%}
+                        {%- if f.format == 'date' and val %}{{ val }}{%- elif f.format == 'bool' -%}
+                            <span class="pill">{{ 'Yes' if val else 'No' }}</span>
+                        {%- else -%}
+                            {{ val if val is not none and val != '' else '—' }}
+                        {%- endif -%}
+                    </div>
+                {%- endfor -%}
+            </div>
+        </div>
+    {%- endmacro %}
+
+    {% macro infer_columns(items, fallback=['id','name','status','created_at']) -%}
+        {%- if items and items|length > 0 -%}
+            {%- set first = items[0] -%}
+            {%- if first is mapping -%}
+                {{ first.keys() | list }}
+            {%- else -%}
+                {{ fallback }}
+            {%- endif -%}
+        {%- else -%}
+            {{ fallback }}
+        {%- endif -%}
+    {%- endmacro %}
+
+    {% macro render_table(items, columns=None, title='', actions=[], empty='No records.') -%}
+        <div class="panel section">
+            <div class="header">
+                <div class="title">{{ title }}</div>
+                <div class="actions">
+                    {%- for act in actions -%}
+                        <a class="btn" href="{{ act.href or '#' }}">{{ act.label }}</a>
+                    {%- endfor -%}
+                </div>
+            </div>
+            {%- set cols = columns if columns else infer_columns(items) -%}
+            {%- if items and items|length -%}
+            <div style="overflow:auto">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            {%- for c in cols -%}
+                                <th>{{ c|replace('_',' ')|title }}</th>
+                            {%- endfor -%}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%- for it in items -%}
+                            <tr>
+                                {%- for c in cols -%}
+                                    <td>
+                                        {%- if it is mapping -%}
+                                            {{ it.get(c) | default('—', true) }}
+                                        {%- else -%}
+                                            {{ (it | attr(c)) | default('—', true) }}
+                                        {%- endif -%}
+                                    </td>
+                                {%- endfor -%}
+                            </tr>
+                        {%- endfor -%}
+                    </tbody>
+                </table>
+            </div>
+            {%- else -%}
+                <div class="empty">{{ empty }}</div>
+            {%- endif -%}
+        </div>
+    {%- endmacro %}
+
+    <!-- Header + Breadcrumb -->
+    <div class="panel">
+        <div class="header">
+            <div>
+                <div class="breadcrumb">
+                    <a href="{{ safe_url('personas') }}">Personas</a> ›
+                    <a href="{{ safe_url('persona_detail') }}"><span>{{ resolve(persona, 'name', resolve(persona,'full_name','Persona')) }}</span></a> ›
+                    <a href="{{ safe_url('user_account_detail') }}">Account</a> ›
+                    <a href="{{ safe_url('client_detail') }}"><span>{{ resolve(client, 'name', 'Client') }}</span></a>
+                </div>
+                <div class="title">Client Dashboard</div>
+            </div>
+            <div class="actions">
+                <a class="btn" href="{{ safe_url('edit_persona') }}">Edit Persona</a>
+                <a class="btn" href="{{ safe_url('edit_user_account') }}">Edit Account</a>
+                <a class="btn ok" href="{{ safe_url('edit_client') }}">Edit Client</a>
+                <a class="btn warn" href="{{ safe_url('back_to_client_list') }}">Back</a>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat">
+                <div class="k">Services</div>
+                <div class="v">{{ services|length if services is defined else 0 }}</div>
+            </div>
+            <div class="stat">
+                <div class="k">Active</div>
+                <div class="v">{{ resolve(client, 'status', resolve(client,'is_active', False)) }}</div>
+            </div>
+            <div class="stat">
+                <div class="k">Updated</div>
+                <div class="v">{{ resolve(client, 'updated_at', resolve(client,'modified_at','—')) }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Persona / Account / Client summaries -->
+    <div class="row section">
+        <div class="col">
+            {{ render_summary(
+                    persona,
+                    [
+                        {'key':'id','label':'Persona ID'},
+                        {'key':'name','label':'Name'},
+                        {'key':'email','label':'Email'},
+                        {'key':'phone','label':'Phone'},
+                        {'key':'created_at','label':'Created','format':'date'},
+                    ],
+                    title='Persona',
+                    extra_actions=[{'label':'View', 'href': safe_url('persona_detail')}]
+            ) }}
+        </div>
+        <div class="col">
+            {{ render_summary(
+                    user_account,
+                    [
+                        {'key':'id','label':'Account ID'},
+                        {'key':'username','label':'Username'},
+                        {'key':'role','label':'Role'},
+                        {'key':'status','label':'Status'},
+                        {'key':'last_login','label':'Last Login','format':'date'},
+                    ],
+                    title='User Account',
+                    extra_actions=[{'label':'Reset Password', 'href': safe_url('reset_password')}]
+            ) }}
+        </div>
+        <div class="col">
+            {{ render_summary(
+                    client,
+                    [
+                        {'key':'id','label':'Client ID'},
+                        {'key':'name','label':'Client Name'},
+                        {'key':'segment','label':'Segment'},
+                        {'key':'status','label':'Status'},
+                        {'key':'created_at','label':'Created','format':'date'},
+                    ],
+                    title='Client',
+                    extra_actions=[{'label':'Open', 'href': safe_url('client_detail')}]
+            ) }}
+        </div>
+    </div>
+
+    <!-- Services -->
+    <div class="section">
+        <div class="panel">
+            <div class="header">
+                <div class="title">Services</div>
+                <div class="actions">
+                    <a class="btn ok" href="{{ safe_url('new_service') }}">New Service</a>
+                </div>
+            </div>
+            <div class="searchbar" style="margin-bottom:10px">
+                <input class="input" name="q_services" placeholder="Search services..." />
+            </div>
+            {{ render_table(
+                    services if services is defined else [],
+                    columns=service_columns if service_columns is defined else None,
+                    title='',
+                    actions=[],
+                    empty='No services for this client.'
+            ) }}
+        </div>
+    </div>
+
+    <!-- Contracts / Subscriptions (if provided) -->
+    <div class="row section">
+        <div class="col">
+            {{ render_table(
+                    subscriptions if subscriptions is defined else [],
+                    columns=subscription_columns if subscription_columns is defined else None,
+                    title='Subscriptions',
+                    actions=[{'label':'New Subscription','href': safe_url('new_subscription')}],
+                    empty='No subscriptions.'
+            ) }}
+        </div>
+        <div class="col">
+            {{ render_table(
+                    contracts if contracts is defined else [],
+                    columns=contract_columns if contract_columns is defined else None,
+                    title='Contracts',
+                    actions=[{'label':'New Contract','href': safe_url('new_contract')}],
+                    empty='No contracts.'
+            ) }}
+        </div>
+    </div>
+
+    <!-- Contacts / Notes -->
+    <div class="row section">
+        <div class="col">
+            {{ render_table(
+                    contacts if contacts is defined else [],
+                    columns=contact_columns if contact_columns is defined else ['name','email','phone','role','status'],
+                    title='Contacts',
+                    actions=[{'label':'Add Contact','href': safe_url('new_contact')}],
+                    empty='No contacts.'
+            ) }}
+        </div>
+        <div class="col">
+            <div class="panel">
+                <div class="header">
+                    <div class="title">Notes</div>
+                    <div class="actions">
+                        <a class="btn" href="{{ safe_url('new_note') }}">Add Note</a>
+                    </div>
+                </div>
+                {%- if notes is defined and notes -%}
+                    <div style="display:flex; flex-direction:column; gap:10px;">
+                        {%- for n in notes -%}
+                            <div style="border:1px solid var(--b); border-radius:8px; padding:10px;">
+                                <div class="muted" style="font-size:12px;">
+                                    {{ (n.author if n is mapping else (n|attr('author'))) | default('') }}
+                                    •
+                                    {{ (n.created_at if n is mapping else (n|attr('created_at'))) | default('') }}
+                                </div>
+                                <div style="margin-top:6px;">
+                                    {{ (n.text if n is mapping else (n|attr('text'))) | default(n|string) }}
+                                </div>
+                            </div>
+                        {%- endfor -%}
+                    </div>
+                {%- else -%}
+                    <div class="empty">No notes yet.</div>
+                {%- endif -%}
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity -->
+    <div class="section">
+        {{ render_table(
+                activity if activity is defined else [],
+                columns=activity_columns if activity_columns is defined else ['timestamp','event','actor','details'],
+                title='Recent Activity',
+                actions=[],
+                empty='No recent activity.'
+        ) }}
+    </div>
+
+    <!-- Raw JSON dump (debug toggleable) -->
+    {% if debug %}
+    <div class="panel section">
+        <div class="title">Debug Context</div>
+        <pre style="white-space:pre-wrap; overflow:auto; font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background:#0f1320; border:1px solid var(--b); border-radius:8px; padding:12px;">
+persona: {{ persona | tojson | default('null', true) }}
+user_account: {{ user_account | tojson | default('null', true) }}
+client: {{ client | tojson | default('null', true) }}
+services: {{ services | tojson | default('[]', true) }}
+subscriptions: {{ subscriptions | tojson | default('[]', true) }}
+contracts: {{ contracts | tojson | default('[]', true) }}
+contacts: {{ contacts | tojson | default('[]', true) }}
+notes: {{ notes | tojson | default('[]', true) }}
+activity: {{ activity | tojson | default('[]', true) }}
+        </pre>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

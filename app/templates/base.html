@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- ============================= GENERAL METADATA ============================== -->
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}Welcome{% endblock %} | DOLY</title>
+        <!-- ============================= STYLESHEETS ============================== -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;600&family=Lobster&family=Inconsolata:wght@400;700&family=Libre+Barcode+128+Text&family=Metal+Mania&family=Press+Start+2P&family=PT+Sans:wght@400;700&family=Shadows+Into+Light&family=Solway:wght@400;700&display=swap" rel="stylesheet">
+        <!-- ============================= DESCRIPTIONS ============================== -->
+        <meta name="description" content="{% block description %}Asistencia vial y Grúas en un solo lugar. Cotiza y recibe atención inmediata con DOLY.{% endblock %}">
+        <meta name="keywords" content="{% block keywords %}{% endblock %}">
+        <meta name="author" content="J. Diego R. E.; Emiliano Z. D.">
+        <!-- ============================= MANIFEST ============================== -->
+        <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+        <meta name="theme-color" content="#eeeeee">
+        <!-- ============================= ICON-LOGO ============================== -->
+        <link rel="icon" href="{{ url_for('static', filename='img/logos/ico/DOLY_LOGO-bg_black-font_orange.ico') }}" type="image/x-icon">
+        <!-- ============================== ROBOTS & CANNONICAL ============================== -->
+        <meta name="robots" content="index, follow">
+        <link rel="canonical" href="{{ request.url_root.rstrip('/') + request.path }}">
+        <!-- ============================= MSAPPLICATION-APPLE ============================== -->
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-title" content="DOLY">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+        <meta name="mobile-web-app-capable" content="yes">
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}">
+        <link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='img/icon-192.png') }}">
+        <link rel="icon" type="image/png" sizes="512x512" href="{{ url_for('static', filename='img/icon-512.png') }}">
+        <link rel="mask-icon" href="{{ url_for('static', filename='img/safari-pinned-tab.svg') }}" color="#5bbad5">
+        <!-- Optional: iOS splash for common sizes (adjust filenames/sizes as provided) -->
+        <link rel="apple-touch-startup-image" href="{{ url_for('static', filename='img/apple-splash-1125x2436.png') }}" media="(device-width:375px) and (device-height:812px) and (-webkit-device-pixel-ratio:3)">
+        <!-- ============================= OPEN GRAPH (Facebook, LinkedIn, WhatsApp) ============================== -->
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="{% block og_title %}DOLY{% endblock %}">
+        <meta property="og:description" content="{% block og_description %}{% endblock %}">
+        <meta property="og:image" content="{{ url_for('static', filename='img/og-image.png', _external=True) }}">
+        <meta property="og:url" content="{{ request.url }}">
+        <meta property="og:site_name" content="DOLY">
+        <!-- ============================= TWITTER CARDS ============================== -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{% block twitter_title %}DOLY{% endblock %}">
+        <meta name="twitter:description" content="{% block twitter_description %}{% endblock %}">
+        <meta name="twitter:image" content="{{ url_for('static', filename='img/og-image.png', _external=True) }}">
+        <meta name="twitter:site" content="@doly_app">
+        <!-- ============================= PWA y accesibilidad ============================== -->
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-title" content="DOLY">
+        <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/icon-192.png') }}">
+        <!-- ============================= JSON-LD (Datos estructurados Schema.org) ============================== -->
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "DOLY",
+            "url": "https://doly.mx/",
+            "logo": "https://doly.mx{{ url_for('static', filename='img/logo.png') }}",
+            "sameAs": [
+                "https://facebook.com/dolyapp",
+                "https://twitter.com/doly_app",
+                "https://instagram.com/dolyapp"
+            ],
+            "contactPoint": [{
+                "@type": "ContactPoint",
+                "telephone": "+52-55-0000-0000",
+                "contactType": "customer service",
+                "areaServed": "MX",
+                "availableLanguage": ["Spanish", "English"]
+            }]
+        }
+        </script>
+        <!-- ============================= SCRIPTS (defer para rendimiento) ============================== -->
+        <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+        <!-- ============================= SECURITY HEADERS (opcional si usas nginx/gunicorn) ============================== -->
+        <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+        img-src 'self' data: https:;
+        font-src 'self' https://fonts.gstatic.com;">
+        {% block head_scripts %}{% endblock %}
+        <!-- Service Worker registration (expects service-worker.js in static) -->
+        <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('{{ url_for("static", filename="service-worker.js") }}')
+                    .catch(function(err){ console.warn('SW registration failed:', err); });
+            });
+        }
+        </script>
+</head>
+    <body>
+        <!-- HEADER -->
+        <div class="header">{% include 'header.html' %}</div>
+        <!-- CONTENIDO -->
+        <main class="content">{% block content %}{% endblock %}</main>
+        <!-- FOOTER -->
+        <div class="footer">{% include 'footer.html' %}</div>
+        {% block scripts %}{% endblock %}
+    </body>
+</html>

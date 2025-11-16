@@ -1,0 +1,15 @@
+<header class="main-header header">
+    <div class="main-header-logo logo">
+        <a class="main-header-logo__image" href="{{ url_for('views.index') }}">
+            <img src="{{ url_for('static', filename='img/logos/ico/DOLY_LOGO-extended.ico') }}" alt="DOLY Logo">
+        </a>
+    </div>
+    <nav class="main-header-nav nav">
+        <ul class="main-header-nav__list list">
+            <li class="main-header-nav__list-item"><a href="{{ url_for('views.index') }}">Home</a></li>
+            <li class="main-header-nav__list-item"><a href="{{ url_for('views.about') }}">About</a></li>
+            <li class="main-header-nav__list-item"><a href="{{ url_for('views.services') }}">Services</a></li>
+            <li class="main-header-nav__list-item"><a href="{{ url_for('views.contact') }}">Contact</a></li>
+        </ul>
+    </nav>
+</header>
