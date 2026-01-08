@@ -1,3 +1,5 @@
+
+
 # DOLY — Documentación del Proyecto
 
 Última actualización: 2026-01-06
@@ -196,13 +198,14 @@ DOLY/
 ## Contacto
 
 - Mantenedor: equipo DOLY (repositorio: `jr-devel/doly`)
-- Para incidencias: abrir issue en el repositorio o escribir a dev@doly.example.com (placeholder)
+- Para incidencias: abrir issue en el repositorio o escribir a dolylogistic@gmail.com
 
 ---
 
 ## Licencia
 
-- Añade la licencia del proyecto si procede (MIT/Apache2/GPL). Actualmente no se incluye licencia en el repo; agrega `LICENSE` si quieres hacer pública la redistribución.
+- Este proyecto está licenciado bajo la **MIT License**. El archivo `LICENSE` se encuentra en la raíz del repositorio.
+- Copyright (c) 2026 jr-devel.
 
 ---
 
@@ -210,4 +213,104 @@ Si quieres, genero también:
 - Un `README` en inglés.
 - Un `CONTRIBUTING.md` con normas de commits y PRs.
 - Un `tree.txt` automático con el árbol completo del proyecto.
+
+---
+
+## Árbol completo del proyecto (estado actual)
+
+```
+DOLY/
+├─ .gitignore
+├─ Procfile
+├─ run.py
+├─ requirements.txt
+└─ app/
+  ├─ __init__.py
+  ├─ auth.py
+  ├─ database.py
+  ├─ log_control.py
+  ├─ views.py
+  ├─ views_client.py
+  ├─ test/
+  │  ├─ test_env.py
+  │  └─ test_conn.py
+  ├─ models/
+  │  ├─ AuditLog.py
+  │  ├─ Assistance.py
+  │  ├─ Client.py
+  │  ├─ ClientType.py
+  │  ├─ Client_Vehicle.py
+  │  ├─ Communication.py
+  │  ├─ Company.py
+  │  ├─ Company_Employee.py
+  │  ├─ Discount.py
+  │  ├─ Employee.py
+  │  ├─ EmployeeType.py
+  │  ├─ Evidence.py
+  │  ├─ Invoice.py
+  │  ├─ MaintenanceLog.py
+  │  ├─ Notification.py
+  │  ├─ Payment.py
+  │  ├─ Persona.py
+  │  ├─ Resource.py
+  │  ├─ Resource_Company.py
+  │  ├─ ResourceType.py
+  │  ├─ Review.py
+  │  ├─ Service.py
+  │  ├─ ServiceType.py
+  │  ├─ Service_Discount.py
+  │  ├─ Session.py
+  │  ├─ Settings.py
+  │  ├─ Status.py
+  │  ├─ SubResourceType.py
+  │  ├─ Tracking.py
+  │  ├─ UserAccount.py
+  │  ├─ Vehicle.py
+  │  └─ VehicleType.py
+  ├─ templates/
+  │  ├─ base.html
+  │  ├─ header.html
+  │  ├─ footer.html
+  ├─ templates/admin/
+  │  └─ index.html
+  ├─ templates/auth/
+  │  ├─ login.html
+  │  └─ signup.html
+  ├─ templates/client/
+  │  └─ dashboard.html
+  ├─ templates/landpage/
+  │  ├─ index.html
+  │  ├─ about.html
+  │  ├─ contact.html
+  │  ├─ help.html
+  │  └─ services.html
+  ├─ static/
+  │  ├─ manifest.json
+  │  ├─ css/
+  │  │  └─ style.min.css
+  │  ├─ js/
+  │  │  ├─ app.js
+  │  │  ├─ modernizr.js
+  │  │  └─ sw.js
+  │  └─ img/
+  │     └─ logos/
+  │        ├─ DOLY_LOGO-extended.png
+  │        ├─ DOLY_LOGO-bg_white-font_orange.png
+  │        ├─ DOLY_LOGO-bg_white-font_orange_square.png
+  │        ├─ DOLY_LOGO-bg_orange-font_black.png
+  │        ├─ DOLY_LOGO-bg_orange-font_black_square.png
+  │        ├─ DOLY_LOGO-bg_black-font_orange.png
+  │        ├─ DOLY_LOGO-bg_black-font_orange_square.png
+  │        ├─ DOLY_LOGO-bg_aqua-font_orange.png
+  │        ├─ DOLY_LOGO-bg_aqua-font_orange_square.png
+  │        └─ ico/
+  │           ├─ DOLY_LOGO-extended.ico
+  │           ├─ DOLY_LOGO-bg_white-font_orange.ico
+  │           ├─ DOLY_LOGO-bg_orange-font_black.ico
+  │           ├─ DOLY_LOGO-bg_black-font_orange.ico
+  │           └─ DOLY_LOGO-bg_aqua-font_orange.ico
+  └─ utilities/
+    └─ logs/
+      └─ data.log
+```
 
