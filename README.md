@@ -1,4 +1,4 @@
-
+<img width="275" height="138" alt="DOLY_LOGO-bg_white-font_black-Corporative2" src="https://github.com/user-attachments/assets/491c22c5-f3ff-4623-96fd-4bb56cce10ba" />
 
 # DOLY — Documentación del Proyecto
 
